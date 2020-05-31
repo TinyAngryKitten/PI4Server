@@ -1,5 +1,4 @@
 services:
-  network-example-service:
-    image: karthequian/helloworld:latest
-    ports:
-      - "80:80"
+  my-custom-app:
+    build: https://github.com/agmangas/mosquitto-websockets.git
+    image: mqttws
