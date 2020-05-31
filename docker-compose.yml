@@ -1,4 +1,3 @@
 services:
   mqtt:
-    build: https://github.com/agmangas/mosquitto-websockets.git
-    image: mqttws
+    image: eclipse-mosquitto:latest
