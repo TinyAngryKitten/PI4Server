@@ -37,7 +37,7 @@ services:
   influxdb:
     image: influxdb:1.7
     volumes:
-      - /home/ubuntu/PI4Server/swarmpit/influx-data:/var/lib/influxdb
+      - /home/ubuntu/PI4Server/swarmpit/influxdb-data:/var/lib/influxdb
     networks:
       - net
     deploy:
