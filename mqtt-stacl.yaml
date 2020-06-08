@@ -1,6 +1,6 @@
 version: '3'
 services:
-  influx:
+  database:
     image: influxdb
       environment:
         NFLUXDB_DB: sensordata
@@ -12,7 +12,7 @@ services:
       ports:
         - "8086:8086"
 
-    grafana:
+    frontend:
       image: grafana/grafana
       environment:
         - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
@@ -27,7 +27,7 @@ services:
       volumes:
         - /home/ubuntu/PI4Server/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-    telegraf:
+    mqttutil:
       image: telegraf
       volumes:
         - /home/pi/PI4Server/telegraf/:/etc/telegraf:ro
