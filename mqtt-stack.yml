@@ -18,7 +18,7 @@ services:
   telegraf:
     image: telegraf
     volumes:
-      - /home/pi/PI4Server/telegraf/:/etc/telegraf:ro
+      - /home/pi/PI4Server/telegraf/:/etc/telegraf
 
   influx:
     image: influxdb
@@ -28,6 +28,6 @@ services:
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
       - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
-      - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
     ports:
       - "8086:8086"
