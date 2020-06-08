@@ -4,9 +4,9 @@ services:
   influx:
     image: influxdb
       environment:
-        - NFLUXDB_DB=sensordata
-        - INFLUXDB_USER=telegraf
-        - INFLUXDB_USER_PASSWORD=telegraf
+        - "NFLUXDB_DB=sensordata"
+        - "INFLUXDB_USER=telegraf"
+        - "INFLUXDB_USER_PASSWORD=telegraf"
       volumes:
         - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
         - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
@@ -32,5 +32,3 @@ services:
         image: telegraf
         volumes:
           - /home/pi/PI4Server/telegraf/:/etc/telegraf:ro
-
-      
