@@ -18,7 +18,7 @@ services:
   telegraf:
     image: telegraf
     volumes:
-      - /home/pi/PI4Server/telegraf/:/etc/telegraf
+      - /home/ubuntu/PI4Server/telegraf/:/etc/telegraf
 
   influx:
     image: influxdb
