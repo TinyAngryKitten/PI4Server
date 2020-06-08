@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   influx:
     image: influxdb
@@ -13,22 +12,22 @@ services:
       ports:
         - "8086:8086"
 
-      grafana:
-        image: grafana/grafana
-        environment:
-          - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
-        ports:
-          - "3000:3000"
+    grafana:
+      image: grafana/grafana
+      environment:
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      ports:
+        - "3000:3000"
 
-      mqtt:
-        image: eclipse-mosquitto
-        ports:
-          - "1883:1883"
-          - "9001:9001"
-        volumes:
-          - /home/ubuntu/PI4Server/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    mqtt:
+      image: eclipse-mosquitto
+      ports:
+        - "1883:1883"
+        - "9001:9001"
+      volumes:
+        - /home/ubuntu/PI4Server/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-      telegraf:
-        image: telegraf
-        volumes:
-          - /home/pi/PI4Server/telegraf/:/etc/telegraf:ro
+    telegraf:
+      image: telegraf
+      volumes:
+        - /home/pi/PI4Server/telegraf/:/etc/telegraf:ro
