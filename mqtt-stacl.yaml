@@ -22,12 +22,12 @@ services:
 
   influx:
     image: influxdb
-      environment:
-        INFLUXDB_DB: sensordata
-        INFLUXDB_USER: telegraf
-        INFLUXDB_USER_PASSWORD: telegraf
-      volumes:
-        - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
-        - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      ports:
-        - "8086:8086"
+    environment:
+      INFLUXDB_DB: sensordata
+      INFLUXDB_USER: telegraf
+      INFLUXDB_USER_PASSWORD: telegraf
+    volumes:
+      - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
+      - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    ports:
+      - "8086:8086"
