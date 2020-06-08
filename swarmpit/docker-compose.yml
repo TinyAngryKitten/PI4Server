@@ -22,7 +22,7 @@ services:
         constraints:
           - node.role == manager
   db:
-    image: treehouses/couchdb:2.3.0
+    image: treehouses/couchdb:2.1.0
     volumes:
       - /home/ubuntu/PI4Server/swarmpit/db-data:/opt/couchdb/data
     networks:
