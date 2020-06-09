@@ -9,8 +9,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - 888:8080
-        mode: host
+      - target: 889
+        published: 8080
+        
     networks:
       - net
     deploy:
