@@ -5,13 +5,19 @@ services:
     environment:
       GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
     ports:
-      - "3000:3000"
+      - target: 3000
+        published: 3000
+        mode: host
 
   mqtt:
     image: eclipse-mosquitto
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - target: 1883
+        published: 1883
+        mode: host
+      - target: 9001
+        published: 9001
+        mode: host
     volumes:
       - /home/ubuntu/PI4Server/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
@@ -30,4 +36,6 @@ services:
       - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
       - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
     ports:
-      - "8086:8086"
+      - target: 8086
+        published: 8086
+        mode: host

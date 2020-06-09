@@ -2,7 +2,9 @@ version: "3.3"
 services:
     gateway:
         ports:
-            - 8080:8080
+            - published: 8080
+              target: 8080
+              mode: host
         image: openfaas/gateway:0.18.13-arm64
         networks:
             - functions
@@ -169,7 +171,9 @@ services:
           - '--config.file=/etc/prometheus/prometheus.yml'
         #   - '-storage.local.path=/prometheus'
         ports:
-            - 9090:9090
+            - published: 9090
+              target: 9090
+              mode: host
         networks:
             - functions
         deploy:
