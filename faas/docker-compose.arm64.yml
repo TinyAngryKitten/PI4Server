@@ -156,7 +156,7 @@ services:
     # Start monitoring
 
     prometheus:
-        image: prom/prometheus:v2.11.0
+        image: prom/prometheus:v2.12.0
         privileged: true
         environment:
             no_proxy: "gateway"
