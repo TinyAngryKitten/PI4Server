@@ -8,6 +8,7 @@ services:
       - target: 3000
         published: 3000
 
+
   mqtt:
     image: eclipse-mosquitto
     ports:
