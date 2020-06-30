@@ -5,10 +5,9 @@ services:
     ports:
       - target: 1883
         published: 1883
-        #mode: host
       - target: 9001
         published: 9001
-        #mode: host
+
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
@@ -19,6 +18,10 @@ services:
 
   influx:
     image: influxdb
+    ports:
+      - target: 8086
+        published: 8086
+    
     environment:
       INFLUXDB_DB: sensordata
       INFLUXDB_USER: telegraf
@@ -26,7 +29,3 @@ services:
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/db:/var/lib/influxdb
       - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
-    ports:
-      - target: 8086
-        published: 8086
-        #mode: host
