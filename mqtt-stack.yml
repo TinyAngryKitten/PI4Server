@@ -1,0 +1,41 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - target: 3000
+        published: 3000
+        mode: host
+
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - target: 1883
+        published: 1883
+        mode: host
+      - target: 9001
+        published: 9001
+        mode: host
+    volumes:
+      - /home/ubuntu/PI4Server/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  telegraf:
+    image: telegraf
+    volumes:
+      - /home/ubuntu/PI4Server/telegraf/:/etc/telegraf
+
+  influx:
+    image: influxdb
+    environment:
+      INFLUXDB_DB: sensordata
+      INFLUXDB_USER: telegraf
+      INFLUXDB_USER_PASSWORD: telegraf
+    volumes:
+      - /home/ubuntu/PI4Server/influxdb/db:/var/lib/influxdb
+      - /home/ubuntu/PI4Server/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+    ports:
+      - target: 8086
+        published: 8086
+        mode: host

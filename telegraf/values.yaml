@@ -13,6 +13,17 @@ env:
   - name: HOSTNAME
     value: "telegraf-polling-service"
 
+# An older "volumeMounts" key was previously added which will likely
+# NOT WORK as you expect. Please use this newer configuration.
+
+ volumes:
+ - name: telegraf-output-influxdb2
+   configMap:
+     name: "telegraf-output-influxdb2"
+ mountPoints:
+ - name: telegraf-output-influxdb2
+   mountPath: /home/ubuntu/PI4Server/telegraf.conf
+   subPath: influxdb2.conf
 
 
 ## Configure resource requests and limits

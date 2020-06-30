@@ -1,13 +1,13 @@
-influxdb.configuration: |2
-  reporting-disabled = false
-  bind-address = "127.0.0.1:8088"
+influxdb.configuration: "
+reporting-disabled = false
+bind-address = "127.0.0.1:8088"
 
-  [meta]
+[meta]
   dir = "/var/lib/influxdb/meta"
   retention-autocreate = true
   logging-enabled = true
 
-  [data]
+[data]
   dir = "/var/lib/influxdb/data"
   index-version = "inmem"
   wal-dir = "/var/lib/influxdb/wal"
@@ -29,7 +29,7 @@ influxdb.configuration: |2
   trace-logging-enabled = false
   tsm-use-madv-willneed = false
 
-  [coordinator]
+[coordinator]
   write-timeout = "10s"
   max-concurrent-queries = 0
   query-timeout = "0s"
@@ -38,21 +38,21 @@ influxdb.configuration: |2
   max-select-series = 0
   max-select-buckets = 0
 
-  [retention]
+[retention]
   enabled = true
   check-interval = "30m0s"
 
-  [shard-precreation]
+[shard-precreation]
   enabled = true
   check-interval = "10m0s"
   advance-period = "30m0s"
 
-  [monitor]
+[monitor]
   store-enabled = true
   store-database = "_internal"
   store-interval = "10s"
 
-  [subscriber]
+[subscriber]
   enabled = true
   http-timeout = "30s"
   insecure-skip-verify = false
@@ -60,7 +60,7 @@ influxdb.configuration: |2
   write-concurrency = 40
   write-buffer-size = 1000
 
-  [http]
+[http]
   enabled = true
   bind-address = ":8086"
   auth-enabled = false
@@ -89,12 +89,12 @@ influxdb.configuration: |2
   max-enqueued-write-limit = 0
   enqueued-write-timeout = 30000000000
 
-  [logging]
+[logging]
   format = "auto"
   level = "info"
   suppress-logo = false
 
-  [[graphite]]
+[[graphite]]
   enabled = false
   bind-address = ":2003"
   database = "graphite"
@@ -107,7 +107,7 @@ influxdb.configuration: |2
   separator = "."
   udp-read-buffer = 0
 
-  [[collectd]]
+[[collectd]]
   enabled = false
   bind-address = ":25826"
   database = "collectd"
@@ -121,7 +121,7 @@ influxdb.configuration: |2
   auth-file = "/etc/collectd/auth_file"
   parse-multivalue-plugin = "split"
 
-  [[opentsdb]]
+[[opentsdb]]
   enabled = false
   bind-address = ":4242"
   database = "opentsdb"
@@ -134,7 +134,7 @@ influxdb.configuration: |2
   batch-timeout = "1s"
   log-point-errors = true
 
-  [[udp]]
+[[udp]]
   enabled = false
   bind-address = ":8089"
   database = "udp"
@@ -145,12 +145,13 @@ influxdb.configuration: |2
   batch-timeout = "1s"
   precision = ""
 
-  [continuous_queries]
+[continuous_queries]
   log-enabled = true
   enabled = true
   query-stats-enabled = false
   run-interval = "1s"
 
-  [tls]
+[tls]
   min-version = ""
   max-version = ""
+"
