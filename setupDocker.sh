@@ -10,17 +10,12 @@ usermod ubuntu -aG docker
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt-get install -y python3 python3-pip
 
-#open faas cli
 curl -sLfS https://cli.openfaas.com | sudo sh
 
-#create pihole folders
-mkdir /home/ubuntu/PI4Server/pihole/
-mkdir /home/ubuntu/PI4Server/pihole/etc-pihole
-mkdir /home/ubuntu/PI4Server/pihole/etc-dnsmasq.d
-
-#create B4åæp¨weinfluxdb folder
-mkdir /home/ubuntu/PI4Server/influxdb/db
-
-#create swarmpit foldersk
-mkdir /home/ubuntu/PI4Server/swarmpit/db-data
-mkdir /home/ubuntu/PI4Server/swarmpit/influxdb-data
+#openfaas
+sudo apt update \
+  && sudo apt install -qy \
+    runc \
+    bridge-utils \
+    tmux \
+    git
