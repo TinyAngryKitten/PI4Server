@@ -11,7 +11,7 @@ services:
     ports:
       - target: 8080
         published: 888
-        mode: host
+        #mode: host
 
     networks:
       - net
