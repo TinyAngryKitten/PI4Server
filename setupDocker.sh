@@ -9,13 +9,3 @@ usermod ubuntu -aG docker
 
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt-get install -y python3 python3-pip
-
-curl -sLfS https://cli.openfaas.com | sudo sh
-
-#openfaas
-sudo apt update \
-  && sudo apt install -qy \
-    runc \
-    bridge-utils \
-    tmux \
-    git
