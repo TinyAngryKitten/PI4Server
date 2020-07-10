@@ -18,9 +18,9 @@ services:
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/mongodb:/data/db
     ports:
-      target: 27017
-      published: 27017
-      mode: host
+      - target: 27017
+        published: 27017
+        mode: host
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: defaultpassword
