@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
 
   pihole:
@@ -21,6 +21,7 @@ services:
       - target: 80
         published: 8081
         mode: host
+
     environment:
       - TZ='Europe/Oslo'
       - WEBPASSWORD="maybeputapasswordhere"
