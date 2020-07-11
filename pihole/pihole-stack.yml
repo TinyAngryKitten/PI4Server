@@ -20,6 +20,9 @@ services:
       placement:
         constraints:
           - node.role == worker
+    volumes:
+      - dnsvolume
+      - piholevolume
     environment:
       - TZ='Europe/Oslo'
       - WEBPASSWORD="maybeputapasswordhere"
