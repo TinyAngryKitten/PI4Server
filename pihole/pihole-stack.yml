@@ -4,8 +4,8 @@ services:
   pihole:
     image: pihole/pihole:latest
     volumes:
-      - "/home/ubuntu/PI4Server/pihole/etc-pihole:/etc/pihole"
-      - "/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
+      - piholevolume::/etc/pihole #"/home/ubuntu/PI4Server/pihole/etc-pihole:/etc/pihole"
+      - dnsvolume:/etc/dnsmasq.d #"/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
     ports:
       - target: 53
         published: 53
@@ -20,6 +20,19 @@ services:
       placement:
         constraints:
           - node.role == worker
+    volumes:
+      piholevolume:
+        driver: local
+        driver_opts:
+          type: nfs
+          o: nfsvers=4,addr=10.0.0.96,rw
+          device: ":/home/ubuntu/PI4Server/pihole/etc-pihole"
+      dnsvolume:
+        driver: local
+        driver_opts:
+          type: nfs
+          o: nfsvers=4,addr=10.0.0.96,rw
+          device: ":/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d"
     environment:
       - TZ='Europe/Oslo'
       - WEBPASSWORD="maybeputapasswordhere"
