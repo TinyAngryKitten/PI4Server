@@ -23,7 +23,7 @@ services:
         mode: host
     environment:
       - TZ='Europe/Oslo'
-      - WEBPASSWORD="thats_just_personal_you_know"
+      - WEBPASSWORD="maybeputapasswordhere"
       - FTL_CMD=debug
       - DNSMASQ_LISTENING=all
     dns:
