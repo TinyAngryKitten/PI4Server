@@ -28,7 +28,7 @@ services:
       #- --providers.docker.exposedbydefault=true
       #- --providers.docker.network=proxy
       - --consul=true
-      - --consul.endpoint=127.0.0.1:8500
+      #- --consul.endpoint=localhost:8500
       #- --entrypoints.web.address=:80
       #- --entrypoints.web-secured.address=:443
       #- --certificatesresolvers.mytlschallenge.acme.httpChallenge.entrypoint=web
