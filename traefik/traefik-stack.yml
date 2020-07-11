@@ -37,8 +37,6 @@ services:
     #volumes:
       #- letsencrypt:/letsencrypt
       #- /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - proxy
     deploy:
       placement:
         constraints:
