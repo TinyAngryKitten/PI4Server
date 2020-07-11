@@ -22,17 +22,17 @@ services:
           - node.role == worker
     volumes:
       - piholevolume:
-          driver: local
-          driver_opts:
-            type: nfs
-            o: nfsvers=4,addr=10.0.0.96,rw
-            device: ":/home/ubuntu/PI4Server/pihole/etc-pihole"
+        driver: local
+        driver_opts:
+          type: nfs
+          o: nfsvers=4,addr=10.0.0.96,rw
+          device: ":/home/ubuntu/PI4Server/pihole/etc-pihole"
       - dnsvolume:
-          driver: local
-          driver_opts:
-            type: nfs
-            o: nfsvers=4,addr=10.0.0.96,rw
-            device: ":/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d"
+        driver: local
+        driver_opts:
+          type: nfs
+          o: nfsvers=4,addr=10.0.0.96,rw
+          device: ":/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d"
     environment:
       - TZ='Europe/Oslo'
       - WEBPASSWORD="maybeputapasswordhere"
