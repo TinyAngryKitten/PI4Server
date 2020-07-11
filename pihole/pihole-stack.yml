@@ -20,9 +20,6 @@ services:
       placement:
         constraints:
           - node.role == worker
-    volumes:
-      - dnsvolume
-      - piholevolume
     environment:
       - TZ='Europe/Oslo'
       - WEBPASSWORD="maybeputapasswordhere"
@@ -31,3 +28,9 @@ services:
     dns:
       - 127.0.0.1
       - 1.1.1.1
+
+volumes:
+   dnsvolume:
+    external: true
+   piholevolume:
+     external: true
