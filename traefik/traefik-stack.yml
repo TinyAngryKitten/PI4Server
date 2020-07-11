@@ -26,7 +26,6 @@ services:
       #- --providers.docker.swarmMode=true
       #- --providers.docker.exposedbydefault=true
       #- --providers.docker.network=proxy
-      - --providers.consul=true
       - --providers.consul.endpoints=127.0.0.1:8500
       - --entrypoints.web.address=:80
       #- --entrypoints.web-secured.address=:443
