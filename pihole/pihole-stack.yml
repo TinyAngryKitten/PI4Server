@@ -12,8 +12,8 @@ services:
       - "/home/ubuntu/PI4Server/pihole/etc-pihole:/etc/pihole"
       - "/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
     ports:
-      - target: 53
-        published: 53
+      - target: 5353
+        published: 5353
         mode: host
       - target: 67
         published: 67
