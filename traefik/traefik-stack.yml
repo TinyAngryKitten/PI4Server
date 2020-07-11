@@ -27,9 +27,9 @@ services:
       #- --providers.docker.swarmMode=true
       #- --providers.docker.exposedbydefault=true
       #- --providers.docker.network=proxy
-      - --consulCatalogue=true
-      - --consulCatalogue.endpoint=10.0.0.96:8500
-      - --consulCatalogue.exposedByDefault=true
+      - --consulcatalog=true
+      - --consulcatalog.endpoint=10.0.0.96:8500
+      - --consulcatalog.exposedByDefault=true
       #- --entrypoints.web.address=:80
       #- --entrypoints.web-secured.address=:443
       #- --certificatesresolvers.mytlschallenge.acme.httpChallenge.entrypoint=web
