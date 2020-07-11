@@ -3,16 +3,11 @@ services:
 
   pihole:
     image: pihole/pihole:latest
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
     volumes:
       - "/home/ubuntu/PI4Server/pihole/etc-pihole:/etc/pihole"
       - "/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d:/etc/dnsmasq.d"
     ports:
-      - target: 5353
+      - target: 53
         published: 5353
         mode: host
       - target: 67
