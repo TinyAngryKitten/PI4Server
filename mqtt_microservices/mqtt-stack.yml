@@ -31,7 +31,7 @@ services:
       - /home/ubuntu/PI4Server/mqtt_microservices/telegraf/:/etc/telegraf
 
   chronograf:
-    image: chronograf:1.8-alpine
+    image: chronograf:1.8
     ports:
       - target: 8888
         published: 8888
