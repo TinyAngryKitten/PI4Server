@@ -25,3 +25,4 @@ docker volume create --driver local \
 
 docker stack deploy -c swarmpit/docker-compose.yml swarmpit
 docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
+docker stack deploy -c traefik/traefik-stack.yml traefik
