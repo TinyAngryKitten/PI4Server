@@ -11,6 +11,9 @@ services:
         mode: host
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`mqtt.localhost`)"
 
   mongodb:
     image: mongo
@@ -24,6 +27,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: defaultpassword
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`mongo.localhost`)"
 
   telegraf:
     image: telegraf
@@ -38,6 +44,9 @@ services:
         mode: host
     volumes:
       - chronografvolume:/var/lib/chronograf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`chronograf.localhost`)"
 
   influx:
     image: influxdb
@@ -52,6 +61,9 @@ services:
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/db:/var/lib/influxdb
       - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
 
 volumes:
    chronografvolume:

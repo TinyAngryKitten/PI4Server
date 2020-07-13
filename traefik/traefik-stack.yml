@@ -23,10 +23,10 @@ services:
       - --api.dashboard=true # see https://docs.traefik.io/v2.0/operations/dashboard/#secure-mode for how to secure the dashboard
       #- --api.debug=true # enable additional endpoints for debugging and profiling
       #- --log.level=DEBUG # debug while we get it working, for more levels/info see https://docs.traefik.io/observability/logs/
-      #- --providers.docker=true
-      #- --providers.docker.swarmMode=true
-      #- --providers.docker.exposedbydefault=true
-      #- --providers.docker.network=proxy
+      - --docker=true
+      - --docker.swarmMode=true
+      - --docker.exposedbydefault=false
+      - --docker.network=proxy
       - --consulcatalog=true
       - --consulcatalog.endpoint=10.0.0.96:8500
       - --consulcatalog.exposedByDefault=true

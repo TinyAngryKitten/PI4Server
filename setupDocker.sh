@@ -1,7 +1,6 @@
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y docker.io
-#maybe install docker too? idk the difference...
 sudo apt install -y git
 
 #ensure user has right to access docker

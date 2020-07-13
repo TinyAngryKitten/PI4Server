@@ -12,6 +12,9 @@ services:
       - target: 8080
         published: 888
         mode: host
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`swarmpit.localhost`)"
 
     networks:
       - net
