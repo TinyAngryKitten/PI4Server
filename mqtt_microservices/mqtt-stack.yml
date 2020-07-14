@@ -41,7 +41,6 @@ services:
     ports:
       - target: 8888
         published: 8888
-        mode: host
     volumes:
       - chronografvolume:/var/lib/chronograf
     deploy:
@@ -52,7 +51,7 @@ services:
         - "traefik.port=8888"
         - "traefik.backend=mqtt.chronograf"
         - traefik.http.services.chronograf.loadbalancer.server.port=8888
-        - --add-host=host.docker.internal:10.0.0.95
+        #- --add-host=host.docker.internal:10.0.0.95
 
   influx:
     image: influxdb
