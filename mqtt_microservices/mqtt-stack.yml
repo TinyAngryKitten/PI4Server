@@ -51,7 +51,6 @@ services:
         - "traefik.http.routers.api.rule=Host(`chronograf.localhost`)"
         - "traefik.port=8888"
         - "traefik.backend=mqtt.chronograf"
-        - "traefik.frontend.rule=Host:chronograf.master.net"
 
   influx:
     image: influxdb
