@@ -7,6 +7,9 @@ networks:
 services:
   traefik:
     image: traefik:1.7.23
+    networks:
+      - proxy
+      - default
     ports:
       - target: 80
         published: 80
