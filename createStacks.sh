@@ -1,3 +1,4 @@
+echo "creating docker volume folders..."
 mkdir mqtt_microservices/mongodb
 mkdir swarmpit/db-data
 mkdir swarmpit/influxdb-data
@@ -5,6 +6,7 @@ mkdir pihole/etc-pihole
 mkdir pihole/etc-dnsmasq.d
 mkdir mqtt_microservices/chronograf
 
+echo "Creating docker volumes..."
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96,rw \
@@ -65,7 +67,9 @@ docker volume create --driver local \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb/influxdb.conf \
       mqttinfluxconf
 
-
+echo "Deploying swarmpit stack"
 docker stack deploy -c swarmpit/docker-compose.yml swarmpit
+echo "Deploying mqtt microservices stack"
 docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
+echo "Deploying traefik stack"
 docker stack deploy -c traefik/traefik-stack.yml traefik
