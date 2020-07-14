@@ -57,10 +57,11 @@ services:
       - target: 8500
         published: 8500
         mode: host
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`consul.localhost`)"
-      - "traefik.http.services.consul.loadbalancer.server.port=8500"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`consul.localhost`)"
+        - "traefik.http.services.consul.loadbalancer.server.port=8500"
 
 volumes:
   letsencrypt:
