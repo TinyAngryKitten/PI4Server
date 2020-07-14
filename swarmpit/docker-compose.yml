@@ -31,7 +31,7 @@ services:
   db:
     image: treehouses/couchdb:2.1.1
     volumes:
-      - /home/ubuntu/PI4Server/swarmpit/db-data:/opt/couchdb/data
+      - dbdata:/opt/couchdb/data
     networks:
       - net
     deploy:
@@ -44,7 +44,7 @@ services:
   influxdb:
     image: influxdb:1.7
     volumes:
-      - /home/ubuntu/PI4Server/swarmpit/influxdb-data:/var/lib/influxdb
+      - influxdata:/var/lib/influxdb
     networks:
       - net
     deploy:
@@ -78,7 +78,7 @@ networks:
     attachable: true
 
 volumes:
-  db-data:
-    driver: local
-  influx-data:
-    driver: local
+  dbdata:
+    external: true
+  influxdata:
+    external: true

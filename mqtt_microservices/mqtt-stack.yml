@@ -10,7 +10,7 @@ services:
         published: 9001
         mode: host
     volumes:
-      - /home/ubuntu/PI4Server/mqtt_microservices/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mqttconf:/mosquitto/config/mosquitto.conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`mqtt.localhost`)"
@@ -19,7 +19,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - /home/ubuntu/PI4Server/mqtt_microservices/mongodb:/data/db
+      - mongodbdata:/data/db
     ports:
       - target: 27017
         published: 27017
@@ -34,7 +34,7 @@ services:
   telegraf:
     image: telegraf
     volumes:
-      - /home/ubuntu/PI4Server/mqtt_microservices/telegraf/:/etc/telegraf
+      - telegrafdata:/etc/telegraf
 
   chronograf:
     image: chronograf:1.8
@@ -59,12 +59,22 @@ services:
       INFLUXDB_USER: telegraf
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
-      - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/db:/var/lib/influxdb
-      - /home/ubuntu/PI4Server/mqtt_microservices/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+      - mqttinfluxdb:/var/lib/influxdb
+      - mqttinfluxconf:/etc/influxdb/influxdb.conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
 
 volumes:
    chronografvolume:
+    external: true
+  mqttconf:
+   external: true
+  mongodbdata:
+   external: true
+  telegrafdata:
+    external: true
+  mqttinfluxdb:
+    external: true
+  mqttinfluxconf:
     external: true
