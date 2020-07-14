@@ -66,12 +66,12 @@ services:
       - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
 
 volumes:
-   chronografvolume:
+  chronografvolume:
     external: true
   mqttconf:
-   external: true
+    external: true
   mongodbdata:
-   external: true
+    external: true
   telegrafdata:
     external: true
   mqttinfluxdb:
