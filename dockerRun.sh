@@ -1,3 +1,8 @@
+sudo docker stop traefik
+sudo docker rm traefik
+sudo docker stop chronograf
+sudo docker rm chronograf
+
 docker network create traefik
 
 docker run -d \
@@ -10,6 +15,7 @@ docker run -d \
   -l docker.network=traefik \
   -l traefik.http.services.chronograf.loadbalancer.server.port=8888 \
   --network traefik \
+  --name chronograf \
   chronograf:1.8
 
   #-v $PWD/traefik.toml:/traefik.toml \
