@@ -33,6 +33,10 @@ docker run -d \
   -l consulcatalog=true \
   -l consulcatalog.endpoint=10.0.0.96:8500 \
   -l consulcatalog.exposedByDefault=true \
+  -l traefik.enable=true \
+  -l traefik.http.routers.api.rule=Host(`traefik.localhost`) \
+  -l traefik.http.routers.api.service=api@internal \
+  -l traefik.http.services.traefik.loadbalancer.server.port=8080 \
   --network traefik \
   --name traefik \
   traefik:1.7.2
