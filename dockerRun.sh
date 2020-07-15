@@ -17,6 +17,7 @@ docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -p 80:80 \
   -p 443:443 \
+  -p 8080:8080 \
   -l traefik.port=8080 \
   -l api=true \
   -l api.dashboard=true \
