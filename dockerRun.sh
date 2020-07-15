@@ -1,5 +1,5 @@
 docker run -d \
-  -v chronografvolume:/var/lib/chronograf \
+  -v /home/ubuntu/PI4Server/mqtt_microservices/chronograf:/var/lib/chronograf \
   -p 8888:8888 \
   -l traefik.enable=true \
   -l traefik.frontend.rule=PathPrefixStrip:/chronograf \
