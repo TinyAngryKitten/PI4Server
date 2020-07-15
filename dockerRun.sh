@@ -5,7 +5,7 @@ docker run -d \
   -l traefik.frontend.rule=PathPrefixStrip:/chronograf \
   -l traefik.port=8888 \
   -l traefik.backend=mqtt.chronograf \
-  -l traefik.http.services.chronograf.loadbalancer.server.port=8888
+  -l traefik.http.services.chronograf.loadbalancer.server.port=8888 \
   chronograf:1.8
 
 docker run -d \
