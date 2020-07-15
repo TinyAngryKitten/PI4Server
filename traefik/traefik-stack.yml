@@ -28,6 +28,7 @@ services:
       - --docker=true
       - --docker.swarmMode=true
       - --docker.exposedbydefault=true
+      - --docker.network=proxy
       - --consulcatalog=true
       - --consulcatalog.endpoint=10.0.0.96:8500
       - --consulcatalog.exposedByDefault=true
