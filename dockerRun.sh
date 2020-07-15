@@ -8,9 +8,9 @@ docker run -d \
   -l traefik.http.services.chronograf.loadbalancer.server.port=8888 \
   chronograf:1.8
 
+  #-v $PWD/traefik.toml:/traefik.toml \
 docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  #-v $PWD/traefik.toml:/traefik.toml \
   -p 80:80 \
   -p 443:443 \
   -l traefik.port=8080 \
