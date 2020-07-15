@@ -9,7 +9,7 @@ docker run -d \
   -l traefik.backend=mqtt.chronograf \
   -l docker.network=traefik \
   -l traefik.http.services.chronograf.loadbalancer.server.port=8888 \
-  -- network traefik \
+  --network traefik \
   chronograf:1.8
 
   #-v $PWD/traefik.toml:/traefik.toml \
