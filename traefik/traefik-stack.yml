@@ -4,52 +4,6 @@ networks:
   proxy:
     external: true
 
-services:
-  traefik:
-    image: traefik:1.7.23
-    networks:
-      - proxy
-    ports:
-      - target: 80
-        published: 80
-        mode: host
-      - target: 8080 #dashboard
-        published: 8080
-        mode: host
-      - target: 443
-        published: 443
-        mode: host
-    command:
-      #- --api.insecure=true # set to 'false' on production
-      - --api=true
-      - --api.dashboard=true # see https://docs.traefik.io/v2.0/operations/dashboard/#secure-mode for how to secure the dashboard
-      #- --api.debug=true # enable additional endpoints for debugging and profiling
-      #- --log.level=DEBUG # debug while we get it working, for more levels/info see https://docs.traefik.io/observability/logs/
-      - --docker=true
-      - --docker.swarmMode=true
-      - --docker.exposedbydefault=true
-      - --docker.network=proxy
-      - --consulcatalog=true
-      - --consulcatalog.endpoint=10.0.0.96:8500
-      - --consulcatalog.exposedByDefault=true
-      #- --entrypoints.web.address=:80
-      #- --entrypoints.web-secured.address=:443
-      #- --certificatesresolvers.mytlschallenge.acme.httpChallenge.entrypoint=web
-      #- --certificatesresolvers.mytlschallenge.acme.email=you@whatever.com
-      #- --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
-    volumes:
-      #- letsencrypt:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.api.rule=Host(`traefik.localhost`)"
-        - "traefik.http.routers.api.service=api@internal" # Let the dashboard access the traefik api
-        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-
   consul:
     image: consul:latest
     deploy:

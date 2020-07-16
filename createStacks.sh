@@ -71,5 +71,5 @@ echo "Deploying swarmpit stack"
 docker stack deploy -c swarmpit/docker-compose.yml swarmpit
 echo "Deploying mqtt microservices stack"
 docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
-#echo "Deploying traefik stack"
-#docker stack deploy -c traefik/traefik-stack.yml traefik
+echo "Deploying traefik stack"
+docker stack deploy -c traefik/traefik-stack.yml traefik
