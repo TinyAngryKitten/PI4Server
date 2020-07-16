@@ -64,7 +64,7 @@ docker volume create --driver local \
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96,rw \
-      --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb/influxdb.conf \
+      --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb \
       mqttinfluxconf
 
 echo "Deploying swarmpit stack"
