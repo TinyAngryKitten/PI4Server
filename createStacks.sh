@@ -9,31 +9,31 @@ mkdir mqtt_microservices/chronograf
 echo "Creating docker volumes..."
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/pihole/etc-pihole \
       piholevolume
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d \
       dnsvolume
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/chronograf \
       chronografvolume
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/swarmpit/db-data \
       dbdata
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/swarmpit/influxdb-data \
       influxdata
 
@@ -45,25 +45,25 @@ docker volume create --driver local \
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/mongodb \
       mongodbdata
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/telegraf \
       telegrafdata
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb/db \
       mqttinfluxdb
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb \
       mqttinfluxconf
 

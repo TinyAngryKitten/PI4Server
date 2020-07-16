@@ -3,8 +3,13 @@ services:
   shepherd:
     build: .
     image: mazzolino/shepherd
+    networks:
+      - notification
     environment:
-      - FILTER_SERVICES="label=tiny.angry.kitten.autodeploy"
+      FILTER_SERVICES: "label=tiny.angry.kitten.autodeploy"
+      APPRISE_SIDECAR_URL: "apprise:5000"
+      VERBOSE: "true"
+      TZ: "Europe/Oslo"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -13,3 +18,12 @@ services:
       placement:
         constraints:
         - node.role == manager
+  apprise:
+    image: mazzolino/apprise-microservice:0.1
+    environment:
+      NOTIFICATION_URLS: mailtos://user:pass@domain/?to=target@example.com
+    networks:
+      - notification
+
+networks:
+  notification:
