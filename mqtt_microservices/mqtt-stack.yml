@@ -11,10 +11,9 @@ services:
         mode: host
     volumes:
       - /home/ubuntu/PI4Server/mqtt_microservices/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`mqtt.localhost`)"
     deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
       placement:
         constraints:
           - node.role == manager
@@ -31,14 +30,18 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: defaultpassword
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`mongo.localhost`)"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`mongo.localhost`)"
 
   telegraf:
     image: telegraf
     volumes:
       - telegrafdata:/etc/telegraf
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
 
   chronograf:
     image: chronograf:1.8
@@ -55,6 +58,7 @@ services:
         - "traefik.port=8888"
         - "traefik.backend=mqtt.chronograf"
         - traefik.http.services.chronograf.loadbalancer.server.port=8888
+        - tiny.angry.kitten.autodeploy
 
   influx:
     image: influxdb
@@ -69,9 +73,10 @@ services:
     volumes:
       - mqttinfluxdb:/var/lib/influxdb
       - mqttinfluxconf:/etc/influxdb
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
 
 volumes:
   chronografvolume:

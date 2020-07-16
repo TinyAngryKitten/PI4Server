@@ -12,10 +12,11 @@ services:
       - target: 8080
         published: 888
         mode: host
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`swarmpit.localhost`)"
-      - "traefik.http.services.consul.loadbalancer.server.port=888"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.api.rule=Host(`swarmpit.localhost`)"
+        - "traefik.http.services.consul.loadbalancer.server.port=888"
 
     networks:
       - net

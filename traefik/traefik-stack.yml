@@ -20,3 +20,4 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.api.rule=Host(`consul.localhost`)"
         - "traefik.http.services.consul.loadbalancer.server.port=8500"
+        - tiny.angry.kitten.autodeploy

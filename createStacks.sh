@@ -73,3 +73,4 @@ echo "Deploying mqtt microservices stack"
 docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
 echo "Deploying traefik stack"
 docker stack deploy -c traefik/traefik-stack.yml traefik
+docker stack deploy -c shepherd/shepherd-stack.yml shepherd

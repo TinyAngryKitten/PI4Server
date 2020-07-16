@@ -1,0 +1,15 @@
+version: "3"
+services:
+  shepherd:
+    build: .
+    image: mazzolino/shepherd
+    environment:
+      - FILTER_SERVICES="label=tiny.angry.kitten.autodeploy"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
+      placement:
+        constraints:
+        - node.role == manager
