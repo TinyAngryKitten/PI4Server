@@ -21,7 +21,7 @@ services:
   apprise:
     image: mazzolino/apprise-microservice:0.1
     environment:
-      NOTIFICATION_URLS: mailtos://user:pass@domain/?to=target@example.com
+      NOTIFICATION_URLS: ""
     networks:
       - notification
 
