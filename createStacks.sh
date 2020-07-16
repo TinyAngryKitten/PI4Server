@@ -39,7 +39,7 @@ docker volume create --driver local \
 
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96,rw \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/mosquitto/mosquitto.conf \
       mqttconf
 
@@ -71,5 +71,5 @@ echo "Deploying swarmpit stack"
 docker stack deploy -c swarmpit/docker-compose.yml swarmpit
 echo "Deploying mqtt microservices stack"
 docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
-echo "Deploying traefik stack"
-docker stack deploy -c traefik/traefik-stack.yml traefik
+#echo "Deploying traefik stack"
+#docker stack deploy -c traefik/traefik-stack.yml traefik
