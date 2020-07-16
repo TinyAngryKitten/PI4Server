@@ -12,3 +12,11 @@ services:
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
+  phillipshue:
+    image: tinyangrykitten/phillipshue
+    networks:
+      - host
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
+    
