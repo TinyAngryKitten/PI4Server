@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  league_notifications:
+    image: tinyangrykitten/livegamenotification
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
+  wakeonlan:
+    image: tinyangrykitten/wakeonlan
+    networks:
+      - host
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
