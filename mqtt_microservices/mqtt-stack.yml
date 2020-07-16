@@ -68,7 +68,7 @@ services:
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
       - mqttinfluxdb:/var/lib/influxdb
-      - mqttinfluxconf/influxdb.conf:/etc/influxdb/influxdb.conf
+      - mqttinfluxconf:/etc/influxdb
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
