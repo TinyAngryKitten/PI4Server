@@ -31,6 +31,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: defaultpassword
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.api.rule=Host(`mongo.localhost`)"
