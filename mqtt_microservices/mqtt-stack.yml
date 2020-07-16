@@ -55,7 +55,6 @@ services:
         - "traefik.port=8888"
         - "traefik.backend=mqtt.chronograf"
         - traefik.http.services.chronograf.loadbalancer.server.port=8888
-        #- --add-host=host.docker.internal:10.0.0.95
 
   influx:
     image: influxdb
@@ -69,7 +68,7 @@ services:
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
       - mqttinfluxdb:/var/lib/influxdb
-      - mqttinfluxconf:/etc/influxdb/influxdb.conf
+      - mqttinfluxconf/influxdb.conf:/etc/influxdb/influxdb.conf
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`influx.localhost`)"
