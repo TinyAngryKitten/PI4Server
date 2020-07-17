@@ -51,6 +51,7 @@ services:
     ports:
       - target: 8888
         published: 8888
+        mode: host
     volumes:
       - chronografvolume:/var/lib/chronograf
     deploy:
