@@ -26,12 +26,12 @@ services:
       placement:
         constraints:
         - node.role == worker
+    environment:
+      NOTIFICATION_URLS: ""
     ports:
       - target: 5000
         published: 5000
         mode: host
-    environment:
-      NOTIFICATION_URLS: ""
     networks:
       - notification
 networks:
