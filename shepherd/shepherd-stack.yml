@@ -27,8 +27,8 @@ services:
         constraints:
         - node.role == worker
     ports:
-      - target: 8000
-        published: 8000
+      - target: 5000
+        published: 5000
         mode: host
     environment:
       NOTIFICATION_URLS: ""
