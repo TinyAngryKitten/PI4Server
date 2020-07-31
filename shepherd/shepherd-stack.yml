@@ -35,6 +35,7 @@ services:
         - node.role == worker
     environment:
       NOTIFICATION_URLS: ""
+      DEBUG: 1
     networks:
       - notification
 networks:
