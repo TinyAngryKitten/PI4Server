@@ -20,6 +20,11 @@ services:
         - node.role == manager
   apprise:
     image: mazzolino/apprise-microservice:0.1
+    ports:
+      - target: 5000
+        published: 5000
+        mode: host
+
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
@@ -28,10 +33,6 @@ services:
         - node.role == worker
     environment:
       NOTIFICATION_URLS: ""
-    ports:
-      - target: 5000
-        published: 5000
-        mode: host
     networks:
       - notification
 networks:
