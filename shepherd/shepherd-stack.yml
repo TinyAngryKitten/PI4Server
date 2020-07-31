@@ -7,7 +7,7 @@ services:
       - notification
     environment:
       FILTER_SERVICES: "label=tiny.angry.kitten.autodeploy"
-      APPRISE_SIDECAR_URL: "apprise:5000"
+      APPRISE_SIDECAR_URL: "apprise:8000"
       VERBOSE: "true"
       TZ: "Europe/Oslo"
     volumes:
@@ -27,13 +27,12 @@ services:
         constraints:
         - node.role == worker
     ports:
-      - target: 5000
-        published: 5000
+      - target: 8000
+        published: 8000
         mode: host
     environment:
       NOTIFICATION_URLS: ""
     networks:
       - notification
-
 networks:
   notification:
