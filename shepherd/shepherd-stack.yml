@@ -24,7 +24,9 @@ services:
       - target: 5000
         published: 5000
         mode: host
-
+      - target: 8000
+        published: 8000
+        mode: host
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
