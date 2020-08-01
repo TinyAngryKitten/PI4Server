@@ -19,6 +19,13 @@ services:
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
+  notifications:
+    image: tinyangrykitten/notifications
+    networks:
+      - host
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
 
 networks:
   host:
