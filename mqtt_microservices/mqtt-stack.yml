@@ -45,9 +45,9 @@ services:
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
-    placement:
-      constraints:
-        - node.role == manager
+      placement:
+        constraints:
+          - node.role == manager
 
   chronograf:
     image: chronograf:1.8
