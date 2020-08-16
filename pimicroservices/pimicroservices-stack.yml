@@ -3,7 +3,7 @@ services:
   league_notifications:
     image: tinyangrykitten/livegamenotification
     environment:
-      - consulhost: "10.0.0.96"
+      "consulhost": "10.0.0.96"
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
