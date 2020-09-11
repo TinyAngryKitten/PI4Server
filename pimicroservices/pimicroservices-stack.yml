@@ -2,8 +2,6 @@ version: '3.8'
 services:
   league_notifications:
     image: tinyangrykitten/livegamenotification
-    environment:
-      "consulhost": "10.0.0.96"
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
@@ -28,7 +26,13 @@ services:
     deploy:
       labels:
         - tiny.angry.kitten.autodeploy
-
+  harmonyhub:
+    image: tinyangrykitten/harmonyhub-server
+    networks:
+      - host
+    deploy:
+      labels:
+        - tiny.angry.kitten.autodeploy
 networks:
   host:
     external: true

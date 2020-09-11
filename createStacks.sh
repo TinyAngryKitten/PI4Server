@@ -67,6 +67,12 @@ docker volume create --driver local \
       --opt device=:/home/ubuntu/PI4Server/mqtt_microservices/influxdb \
       mqttinfluxconf
 
+docker pull tinyangrykitten/hueserver:latest
+docker pull tinyangrykitten/livegamenotification:latest
+docker pull tinyangrykitten/wakeonlan:latest
+docker pull tinyangrykitten/notifications:latest
+docker pull tinyangrykitten/harmonyhub-server:latest
+
 echo "Deploying swarmpit stack"
 docker stack deploy -c swarmpit/docker-compose.yml swarmpit
 echo "Deploying mqtt microservices stack"
