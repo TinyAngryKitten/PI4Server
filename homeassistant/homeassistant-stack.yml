@@ -6,6 +6,12 @@ services:
       - target: 8123
         published: 8123
         mode: host
+      - target: 5353
+        published: 5353
+        mode: host
+      - target: 51827
+        published: 51827
+        mode: host
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - homeassistantvolume:/config
