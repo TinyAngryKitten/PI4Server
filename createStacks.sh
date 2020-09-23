@@ -5,8 +5,15 @@ mkdir swarmpit/influxdb-data
 mkdir pihole/etc-pihole
 mkdir pihole/etc-dnsmasq.d
 mkdir mqtt_microservices/chronograf
+mkdir homeassistant/data
 
 echo "Creating docker volumes..."
+docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt device=:/home/ubuntu/PI4Server/homeassistant/data \
+      homeassistantvolume
+
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
@@ -81,3 +88,4 @@ echo "Deploying traefik stack"
 docker stack deploy -c traefik/traefik-stack.yml traefik
 docker stack deploy -c shepherd/shepherd-stack.yml shepherd
 docker stack deploy -c pimicroservices/pimicroservices-stack.yml microservices
+docker stack deploy -c homeassistant/homeassistant-stack.yml homeassistant

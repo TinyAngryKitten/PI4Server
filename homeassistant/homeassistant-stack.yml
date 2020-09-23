@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:0.115.2
+    network_mode: host
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - homeassistantvolume:/config
+    restart: always
+
+volumes:
+  homeassistantvolume:
+    external: true
