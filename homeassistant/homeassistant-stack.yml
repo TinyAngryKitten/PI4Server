@@ -3,6 +3,10 @@ services:
   homeassistant:
     image: homeassistant/home-assistant:0.115.2
     network_mode: host
+    ports:
+      - target: 8123
+        published: 8123
+        mode: host
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - homeassistantvolume:/config
