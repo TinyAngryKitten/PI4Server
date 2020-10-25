@@ -8,8 +8,8 @@ networks:
 services:
   traefik:
     image: traefik:1.7.23
-    networks:
-      - proxy
+    #networks:
+      #- proxy
     ports:
       - target: 80
         published: 80
@@ -29,7 +29,7 @@ services:
       - --docker=true
       - --docker.swarmMode=true
       - --docker.exposedbydefault=false
-      - --docker.network=proxy
+      #- --docker.network=proxy
       - --consulcatalog=true
       - --consulcatalog.endpoint=10.0.0.96:8500
       - --consulcatalog.exposedByDefault=true
