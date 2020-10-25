@@ -11,12 +11,6 @@ echo "Creating docker volumes..."
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
-      --opt device=:/home/ubuntu/PI4Server/homebridge/data \
-      homebridgevolume
-
-docker volume create --driver local \
-      --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/pihole/etc-pihole \
       piholevolume
 
@@ -88,4 +82,3 @@ echo "Deploying traefik stack"
 docker stack deploy -c traefik/traefik-stack.yml traefik
 docker stack deploy -c shepherd/shepherd-stack.yml shepherd
 docker stack deploy -c pimicroservices/pimicroservices-stack.yml microservices
-docker stack deploy -c homebridge/homebridge-stack.yml homebridge
