@@ -25,6 +25,12 @@ docker volume create --driver local \
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt device=:/home/ubuntu/PI4Server/traefik \
+      traefikvolume
+
+docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:/home/ubuntu/PI4Server/pihole/etc-dnsmasq.d \
       dnsvolume
 

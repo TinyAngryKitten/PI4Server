@@ -35,8 +35,9 @@ services:
       #- --certificatesresolvers.mytlschallenge.acme.email=you@whatever.com
       #- --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
     volumes:
-      #- letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
+      - traefikvolume/traefik.toml:/traefik.toml
+      #- /root/configs/traefik/acme.json:/acme.json
     deploy:
       placement:
         constraints:
@@ -62,3 +63,7 @@ services:
         - "traefik.http.routers.api.rule=Host(`consul.localhost`)"
         - "traefik.http.services.consul.loadbalancer.server.port=8500"
         - tiny.angry.kitten.autodeploy
+
+volumes:
+  traefikvolume:
+    external: true
