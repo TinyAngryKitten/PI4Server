@@ -7,6 +7,14 @@ mkdir pihole/etc-dnsmasq.d
 mkdir mqtt_microservices/chronograf
 mkdir homebridge/data
 
+#Create a network that dont overlap with the local network
+#docker network create \
+#    --driver overlay \
+#    --ingress \
+#    --subnet 172.16.0.0/16 \
+#    --gateway 172.16.0.1 \
+#    ingress
+
 echo "Creating docker volumes..."
 docker volume create --driver local \
       --opt type=nfs \
