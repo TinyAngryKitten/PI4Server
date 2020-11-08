@@ -7,8 +7,9 @@ networks:
 services:
   traefik:
     image: traefik:1.7.23
-    #networks:
-      #- proxy
+    configs:
+      - source: traefikconfig
+        target: /traefik.toml
     ports:
       - target: 80
         published: 80
@@ -36,9 +37,14 @@ services:
       #- --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - traefikvolume/traefik.toml:/traefik.toml
+      #- /mnt/raidstorage/rpidata/traefik/traefik.toml:/traefik.toml
       #- /root/configs/traefik/acme.json:/acme.json
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       placement:
         constraints:
           - node.role == manager
@@ -50,6 +56,11 @@ services:
   consul:
     image: consul:latest
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       placement:
         constraints:
           - node.role == manager
@@ -63,7 +74,9 @@ services:
         - "traefik.http.routers.api.rule=Host(`consul.localhost`)"
         - "traefik.http.services.consul.loadbalancer.server.port=8500"
         - tiny.angry.kitten.autodeploy
-
 volumes:
   traefikvolume:
+    external: true
+configs:
+  traefikconfig:
     external: true

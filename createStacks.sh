@@ -29,20 +29,26 @@ echo "Creating docker volumes..."
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt device=:$rootFolder/homebridge/data \
+      homebridgevolume
+
+docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:$rootFolder/pihole/etc-pihole \
       piholevolume
 
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
-      --opt device=:$rootFolder/traefik \
-      traefikvolume
+      --opt device=:$rootFolder/pihole/etc-dnsmasq.d \
+      dnsvolume
 
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
-      --opt device=:$rootFolder/pihole/etc-dnsmasq.d \
-      dnsvolume
+      --opt device=:$rootFolder/traefik \
+      traefikvolume
 
 docker volume create --driver local \
       --opt type=nfs \
@@ -65,7 +71,7 @@ docker volume create --driver local \
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
-      --opt device=:$rootFolder/mqtt_microservices/mosquitto/mosquitto.conf \
+      --opt device=:$rootFolder/mqtt_microservices/mosquitto \
       mqttconf
 
 docker volume create --driver local \
@@ -91,6 +97,9 @@ docker volume create --driver local \
       --opt o=nfsvers=4,addr=10.0.0.96 \
       --opt device=:$rootFolder/mqtt_microservices/influxdb \
       mqttinfluxconf
+
+docker config create telegrafconfig mqtt_microservices/telegraf/telegraf.conf
+docker config create traefikconfig traefik/traefik.toml
 
 docker pull tinyangrykitten/hueserver:latest
 docker pull tinyangrykitten/livegamenotification:latest

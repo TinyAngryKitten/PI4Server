@@ -17,6 +17,11 @@ services:
         published: 8081
         mode: host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       placement:
         constraints:
           - node.role == worker

@@ -1,7 +1,6 @@
 version: "3.8"
 services:
   shepherd:
-    build: .
     image: mazzolino/shepherd
     networks:
       - notification
@@ -13,6 +12,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
       placement:
@@ -28,6 +32,11 @@ services:
         published: 8000
         mode: host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
       placement:

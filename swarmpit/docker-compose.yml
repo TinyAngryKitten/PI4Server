@@ -13,6 +13,11 @@ services:
         published: 888
         mode: host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.api.rule=Host(`swarmpit.localhost`)"
@@ -36,6 +41,7 @@ services:
     networks:
       - net
     deploy:
+      restart: on-failure
       resources:
         limits:
           memory: 256M
@@ -49,6 +55,11 @@ services:
     networks:
       - net
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       resources:
         limits:
           memory: 256M
@@ -64,6 +75,11 @@ services:
     networks:
       - net
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       mode: global
       labels:
         swarmpit.agent: 'true'

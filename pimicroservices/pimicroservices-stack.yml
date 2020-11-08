@@ -3,6 +3,11 @@ services:
   league_notifications:
     image: tinyangrykitten/livegamenotification
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
   wakeonlan:
@@ -10,6 +15,11 @@ services:
     networks:
       - host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
   hueserver:
@@ -17,6 +27,11 @@ services:
     networks:
       - host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
   notifications:
@@ -24,6 +39,11 @@ services:
     networks:
       - host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
   harmonyhub:
@@ -31,6 +51,11 @@ services:
     networks:
       - host
     deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
       labels:
         - tiny.angry.kitten.autodeploy
 networks:
