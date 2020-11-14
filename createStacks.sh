@@ -1,17 +1,26 @@
 export rootFolder=/mnt/raidstorage/rpidata #/home/ubuntu/PI4Server
 export keyPath=/Users/sanderhoyvik/Keys/sshkey
+export username=ubuntu
 
 echo "creating docker volume folders..."
 
+echo "transfering files to server"
+scp mqtt_microservices/kapacitor/ticks/* $username@10.0.0.96:/home/ubuntu/ticks/
+
 ssh -p 22 -i $keyPath ubuntu@10.0.0.96 << EOF
-mkdir $rootFolder/mqtt_microservices/mongodb
-mkdir $rootFolder/swarmpit/db-data
-mkdir $rootFolder/swarmpit/influxdb-data
-mkdir $rootFolder/pihole/etc-pihole
-mkdir $rootFolder/pihole/etc-dnsmasq.d
-mkdir $rootFolder/mqtt_microservices/chronograf
-mkdir $rootFolder/homebridge/data
+sudo mkdir $rootFolder/swarmpit/db-data
+sudo mkdir $rootFolder/swarmpit/influxdb-data
+sudo mkdir $rootFolder/pihole/etc-pihole
+sudo mkdir $rootFolder/pihole/etc-dnsmasq.d
+sudo mkdir $rootFolder/homebridge/data
+sudo mkdir $rootFolder/mqtt_microservices/mongodb
+sudo mkdir $rootFolder/mqtt_microservices/chronograf
+sudo mkdir $rootFolder/mqtt_microservices/kapacitor
+sudo mkdir $rootFolder/mqtt_microservices/kapacitor/data
+sudo mkdir $rootFolder/mqtt_microservices/kapacitor/ticks
+sudo \cp -rf /home/ubuntu/ticks/* $rootFolder/mqtt_microservices/kapacitor/ticks/
 EOF
+
 
 echo "Connecting to remote docker host"
 eval $(docker-machine env pi4Cluster)
@@ -26,6 +35,18 @@ docker network create \
     ingress
 
 echo "Creating docker volumes..."
+docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt device=:$rootFolder/kapacitor/data \
+      kapacitortickvolume
+
+docker volume create --driver local \
+      --opt type=nfs \
+      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt device=:$rootFolder/kapacitor/ticks \
+      kapacitordatavolume
+
 docker volume create --driver local \
       --opt type=nfs \
       --opt o=nfsvers=4,addr=10.0.0.96 \
@@ -98,7 +119,6 @@ docker volume create --driver local \
       --opt device=:$rootFolder/mqtt_microservices/influxdb \
       mqttinfluxconf
 
-docker config create telegrafconfig mqtt_microservices/telegraf/telegraf.conf
 docker config create traefikconfig traefik/traefik.toml
 
 docker pull tinyangrykitten/hueserver:latest

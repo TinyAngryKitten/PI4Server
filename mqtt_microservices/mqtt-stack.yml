@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+  image: kapacitor:1.5-alpine
+  volumes:
+    - kapacitordatavolume:/var/lib/kapacitor
+    - kapacitortickvolume:/home/kapacitor
+    - /root/configs/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf
+  environment:
+    KAPACITOR_INFLUXDB_0_URLS_0: http://influx:8086
+  labels:
+    - "traefik.backend=kapacitorbackend"
+    - "traefik.enable=true"
+    - "traefik.port=9092"
   mqtt:
     image: eclipse-mosquitto:1.6
     ports:
@@ -46,6 +57,8 @@ services:
 
   telegraf:
     image: telegraf:1.16
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     configs:
       - source: telegrafconfig
         target: /etc/telegraf/telegraf.conf
@@ -118,7 +131,13 @@ volumes:
     external: true
   mqttinfluxconf:
     external: true
+  kapacitorvolume:
+    external: true
+  kapacitortickvolume:
+    external: true
 
 configs:
   telegrafconfig:
-    external: true
+    file: telegraf/telegraf.conf
+  kapacitorconfig:
+    file: kapacitor/kapacitor.conf
