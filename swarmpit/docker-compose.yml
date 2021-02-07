@@ -46,6 +46,9 @@ services:
         delay: 10s
         max_attempts: 3
         window: 300s
+      placement:
+        constraints:
+          - node.role == manager
       resources:
         limits:
           memory: 256M

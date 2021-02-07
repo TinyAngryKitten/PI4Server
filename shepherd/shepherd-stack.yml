@@ -6,11 +6,19 @@ services:
       - notification
     environment:
       FILTER_SERVICES: "label=tiny.angry.kitten.autodeploy"
-      APPRISE_SIDECAR_URL: "apprise:8000"
+      WITH_REGISTRY_AUTH: "true"
+      SLEEP_TIME: "60m"
+      IMAGE_AUTOCLEAN_LIMIT: "5"
       VERBOSE: "true"
       TZ: "Europe/Oslo"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - type: volume
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: volume
+        source: /root/.docker/config.json
+        target: /root/.docker/config.json
+        read_only: true
     deploy:
       restart_policy:
         condition: on-failure
@@ -22,30 +30,5 @@ services:
       placement:
         constraints:
         - node.role == manager
-  apprise:
-    image: mazzolino/apprise-microservice:0.1
-    ports:
-      - target: 5000
-        published: 5000
-        mode: host
-      - target: 8000
-        published: 8000
-        mode: host
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 3
-        window: 300s
-      labels:
-        - tiny.angry.kitten.autodeploy
-      placement:
-        constraints:
-        - node.role == worker
-    environment:
-      NOTIFICATION_URLS: ""
-      DEBUG: 1
-    networks:
-      - notification
 networks:
   notification:

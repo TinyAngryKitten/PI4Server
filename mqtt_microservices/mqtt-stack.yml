@@ -1,16 +1,80 @@
 version: '3.8'
 services:
-  image: kapacitor:1.5-alpine
-  volumes:
-    - kapacitordatavolume:/var/lib/kapacitor
-    - kapacitortickvolume:/home/kapacitor
-    - /root/configs/kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf
-  environment:
-    KAPACITOR_INFLUXDB_0_URLS_0: http://influx:8086
-  labels:
-    - "traefik.backend=kapacitorbackend"
-    - "traefik.enable=true"
-    - "traefik.port=9092"
+  nodered:
+    image: nodered/node-red:latest
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.frontend.rule=PathPrefixStrip:/nodered"
+        - "traefik.http.routers.api.rule=Host(`nodered.localhost`)"
+        - "traefik.port=1880"
+        - "traefik.backend=nodered"
+        - traefik.http.services.nodered.loadbalancer.server.port=1880
+        - tiny.angry.kitten.autodeploy
+    environment:
+      - TZ=Europe/Oslo
+    ports:
+      - published: 1880
+        target: 1880
+      - published: 514
+        target: 20514
+    volumes:
+      - /home/ubuntu/nodered:/data
+
+  syslog:
+    image: balabit/syslog-ng:latest
+    ports:
+      - published: 601
+        target: 601
+      - published: 514
+        target: 514
+    configs:
+      - source: syslogconfig
+        target: /etc/syslog-ng/syslog-ng.conf
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
+
+  kapacitor:
+    image: kapacitor:1.5.6
+    volumes:
+      - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/ticks:/var/lib/kapacitor
+      - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/data:/home/kapacitor
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 300s
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - tiny.angry.kitten.autodeploy
+    configs:
+      - source: kapacitorconfig
+        target: /etc/kapacitor/kapacitor.conf
+    environment:
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influx:8086
+      KAPACITOR_MQTT_0_ENABLED: "true"
+      KAPACITOR_MQTT_0_NAME: "default"
+      KAPACITOR_MQTT_0_DEFAULT: "true"
+      KAPACITOR_MQTT_0_URL: tcp://mqtt:1883
+    labels:
+      - "traefik.backend=kapacitorbackend"
+      - "traefik.enable=true"
+      - "traefik.port=9092"
   mqtt:
     image: eclipse-mosquitto:1.6
     ports:
@@ -18,8 +82,11 @@ services:
         published: 1883
       - target: 9001
         published: 9001
-    volumes:
-      - mqttconf:/mosquitto/config
+    configs:
+      - source: mqttconfig
+        target: mosquitto/config/mosquitto.conf
+    #volumes:
+      #- mqttconf:/mosquitto/config
     deploy:
       restart_policy:
         condition: on-failure
@@ -35,7 +102,7 @@ services:
   mongodb:
     image: mongo:4.4.1-bionic
     volumes:
-      - mongodbdata:/data/db
+      - /home/ubuntu/mongodb:/data/db
     ports:
       - target: 27017
         published: 27017
@@ -60,7 +127,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     configs:
-      - source: telegrafconfig
+      - source: telegrafconfig_1
         target: /etc/telegraf/telegraf.conf
     deploy:
       restart_policy:
@@ -80,8 +147,11 @@ services:
       - target: 8888
         published: 8888
     volumes:
-      - chronografvolume:/var/lib/chronograf
+      - /mnt/raidstorage/rpidata/mqtt_microservices/chronograf:/var/lib/chronograf
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -106,9 +176,12 @@ services:
       INFLUXDB_USER: telegraf
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
-      - mqttinfluxdb:/var/lib/influxdb
-      - mqttinfluxconf:/etc/influxdb
+      - /mnt/raidstorage/rpidata/mqtt_microservices/influxdb/db:/var/lib/influxdb
+      - /mnt/raidstorage/rpidata/mqtt_microservices/influxdb:/etc/influxdb
     deploy:
+      placement:
+        constraints:
+          - node.role == manager
       restart_policy:
         condition: on-failure
         delay: 10s
@@ -131,13 +204,13 @@ volumes:
     external: true
   mqttinfluxconf:
     external: true
-  kapacitorvolume:
-    external: true
-  kapacitortickvolume:
-    external: true
 
 configs:
-  telegrafconfig:
+  mqttconfig:
+    file: mosquitto/mosquitto.conf
+  telegrafconfig_1:
     file: telegraf/telegraf.conf
   kapacitorconfig:
     file: kapacitor/kapacitor.conf
+  syslogconfig:
+    file: syslog-ng/syslog-ng.conf

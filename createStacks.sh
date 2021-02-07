@@ -1,13 +1,14 @@
 export rootFolder=/mnt/raidstorage/rpidata #/home/ubuntu/PI4Server
 export keyPath=/Users/sanderhoyvik/Keys/sshkey
 export username=ubuntu
+export masterip=192.168.50.3
 
 echo "creating docker volume folders..."
 
 echo "transfering files to server"
-scp mqtt_microservices/kapacitor/ticks/* $username@10.0.0.96:/home/ubuntu/ticks/
+scp mqtt_microservices/kapacitor/ticks/* $username@$masterip:/home/ubuntu/ticks/
 
-ssh -p 22 -i $keyPath ubuntu@10.0.0.96 << EOF
+ssh -p 22 -i $keyPath ubuntu@$masterip << EOF
 sudo mkdir $rootFolder/swarmpit/db-data
 sudo mkdir $rootFolder/swarmpit/influxdb-data
 sudo mkdir $rootFolder/pihole/etc-pihole
@@ -35,91 +36,106 @@ docker network create \
     ingress
 
 echo "Creating docker volumes..."
+docker volume rm kapacitortickvolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/kapacitor/data \
       kapacitortickvolume
 
+docker volume rm kapacitordatavolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/kapacitor/ticks \
       kapacitordatavolume
 
+docker volume rm homebridgevolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/homebridge/data \
       homebridgevolume
 
+docker volume rm piholevolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/pihole/etc-pihole \
       piholevolume
 
+docker volume rm dnsvolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/pihole/etc-dnsmasq.d \
       dnsvolume
 
+docker volume rm traefikvolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/traefik \
       traefikvolume
 
+docker volume rm chronografvolume
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/chronograf \
       chronografvolume
 
+docker volume rm dbdata
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/swarmpit/db-data \
       dbdata
 
+docker volume rm influxdata
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/swarmpit/influxdb-data \
       influxdata
 
+docker volume rm mqttconf
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/mosquitto \
       mqttconf
 
+docker volume rm mongodbdata
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/mongodb \
       mongodbdata
 
+docker volume rm telegrafdata
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/telegraf \
       telegrafdata
 
+docker volume rm mqttinfluxdb
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/influxdb/db \
       mqttinfluxdb
 
+docker volume rm mqttinfluxconf
 docker volume create --driver local \
       --opt type=nfs \
-      --opt o=nfsvers=4,addr=10.0.0.96 \
+      --opt o=nfsvers=4,addr=$masterip \
       --opt device=:$rootFolder/mqtt_microservices/influxdb \
       mqttinfluxconf
 
 docker config create traefikconfig traefik/traefik.toml
+#docker config create mqttconfig mqtt_microservices/mosquitto/mosquitto.conf
 
 docker pull tinyangrykitten/hueserver:latest
 docker pull tinyangrykitten/livegamenotification:latest
@@ -128,12 +144,12 @@ docker pull tinyangrykitten/notifications:latest
 docker pull tinyangrykitten/harmonyhub-server:latest
 
 echo "Deploying swarmpit stack"
-docker stack deploy -c swarmpit/docker-compose.yml swarmpit
+docker stack deploy --with-registry-auth -c swarmpit/docker-compose.yml swarmpit
 echo "Deploying mqtt microservices stack"
-docker stack deploy -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
+docker stack deploy --with-registry-auth -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
 echo "Deploying traefik stack"
-docker stack deploy -c traefik/traefik-stack.yml traefik
+docker stack deploy --with-registry-auth -c traefik/traefik-stack.yml traefik
 echo "Deplying shepherd stack"
-docker stack deploy -c shepherd/shepherd-stack.yml shepherd
+docker stack deploy --with-registry-auth -c shepherd/shepherd-stack.yml shepherd
 echo "Deploying microservices stack"
-docker stack deploy -c pimicroservices/pimicroservices-stack.yml microservices
+docker stack deploy --with-registry-auth -c pimicroservices/pimicroservices-stack.yml microservices
