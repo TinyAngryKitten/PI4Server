@@ -2,6 +2,10 @@ version: '3.8'
 services:
   nodered:
     image: nodered/node-red:latest
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     deploy:
       placement:
         constraints:
@@ -24,21 +28,27 @@ services:
     ports:
       - published: 1880
         target: 1880
-      - published: 514
-        target: 20514
     volumes:
-      - /home/ubuntu/nodered:/data
+      - /mnt/raidstorage/rpidata/nodered:/data
 
   syslog:
-    image: balabit/syslog-ng:latest
+    image: tinyangrykitten/syslog-to-mqtt:latest
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     ports:
-      - published: 601
-        target: 601
-      - published: 514
-        target: 514
-    configs:
-      - source: syslogconfig
-        target: /etc/syslog-ng/syslog-ng.conf
+      - published: 20514
+        target: 20514
+        protocol: udp
+    environment:
+      - BROKER=mqtt
+      - BROKER_PORT=1883
+      - BROKER_CLIENT_ID=syslog
+      - CCHOST=logs3.papertrailapp.com
+      - CCPORT=15007
+      - PORT=20514
+      - BROKER_TOPIC=/logs/
     deploy:
       restart_policy:
         condition: on-failure
@@ -48,6 +58,10 @@ services:
 
   kapacitor:
     image: kapacitor:1.5.6
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     volumes:
       - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/ticks:/var/lib/kapacitor
       - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/data:/home/kapacitor
@@ -77,6 +91,10 @@ services:
       - "traefik.port=9092"
   mqtt:
     image: eclipse-mosquitto:1.6
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     ports:
       - target: 1883
         published: 1883
@@ -101,8 +119,12 @@ services:
 
   mongodb:
     image: mongo:4.4.1-bionic
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     volumes:
-      - /home/ubuntu/mongodb:/data/db
+      - /home/alpha/mongodb:/data/db
     ports:
       - target: 27017
         published: 27017
@@ -124,6 +146,10 @@ services:
 
   telegraf:
     image: telegraf:1.16
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     configs:
@@ -143,6 +169,10 @@ services:
 
   chronograf:
     image: chronograf:1.8
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     ports:
       - target: 8888
         published: 8888
@@ -168,6 +198,10 @@ services:
 
   influx:
     image: influxdb:1.7
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     ports:
       - target: 8086
         published: 8086
@@ -212,5 +246,3 @@ configs:
     file: telegraf/telegraf.conf
   kapacitorconfig:
     file: kapacitor/kapacitor.conf
-  syslogconfig:
-    file: syslog-ng/syslog-ng.conf

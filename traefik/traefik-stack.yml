@@ -7,6 +7,10 @@ networks:
 services:
   traefik:
     image: traefik:1.7.23
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     configs:
       - source: traefikconfig
         target: /traefik.toml
@@ -55,6 +59,10 @@ services:
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
   consul:
     image: consul:latest
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     deploy:
       restart_policy:
         condition: on-failure

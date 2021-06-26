@@ -2,6 +2,10 @@ version: '3.8'
 services:
   league_notifications:
     image: tinyangrykitten/livegamenotification
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     deploy:
       restart_policy:
         condition: on-failure
@@ -12,6 +16,10 @@ services:
         - tiny.angry.kitten.autodeploy
   wakeonlan:
     image: tinyangrykitten/wakeonlan
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - host
     deploy:
@@ -24,6 +32,10 @@ services:
         - tiny.angry.kitten.autodeploy
   hueserver:
     image: tinyangrykitten/hueserver
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - host
     deploy:
@@ -36,6 +48,10 @@ services:
         - tiny.angry.kitten.autodeploy
   notifications:
     image: tinyangrykitten/notifications
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - host
     deploy:
@@ -48,6 +64,10 @@ services:
         - tiny.angry.kitten.autodeploy
   harmonyhub:
     image: tinyangrykitten/harmonyhub-server
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - host
     deploy:

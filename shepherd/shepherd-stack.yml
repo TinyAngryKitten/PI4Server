@@ -2,6 +2,10 @@ version: "3.8"
 services:
   shepherd:
     image: mazzolino/shepherd
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - notification
     environment:
