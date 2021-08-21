@@ -3,3 +3,4 @@ swarmpit/influxdb-data/.DS_Store
 .DS_Store
 .DS_Store
 .DS_Store
+.env
