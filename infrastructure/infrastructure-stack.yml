@@ -1,48 +1,21 @@
 version: '3.8'
 services:
-  nodered:
-    image: nodered/node-red:latest
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}/{{.Name}}"
-    deploy:
-      placement:
-        constraints:
-          - node.role == worker
-      restart_policy:
-        condition: on-failure
-        delay: 10s
-        max_attempts: 3
-        window: 300s
-      labels:
-        - "traefik.enable=true"
-        - "traefik.frontend.rule=PathPrefixStrip:/nodered"
-        - "traefik.http.routers.api.rule=Host(`nodered.localhost`)"
-        - "traefik.port=1880"
-        - "traefik.backend=nodered"
-        - traefik.http.services.nodered.loadbalancer.server.port=1880
-        - tiny.angry.kitten.autodeploy
-    environment:
-      - TZ=Europe/Oslo
-    ports:
-      - published: 1880
-        target: 1880
-    volumes:
-      - /mnt/raidstorage/rpidata/nodered:/data
-
   syslog:
     image: tinyangrykitten/syslog-to-mqtt:latest
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     ports:
       - published: 20514
         target: 20514
         protocol: udp
     environment:
-      - BROKER=mqtt
+      - BROKER=192.168.50.3
       - BROKER_PORT=1883
       - BROKER_CLIENT_ID=syslog
       - CCHOST=logs3.papertrailapp.com
@@ -59,12 +32,16 @@ services:
   kapacitor:
     image: kapacitor:1.5.6
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     volumes:
-      - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/ticks:/var/lib/kapacitor
-      - /mnt/raidstorage/rpidata/mqtt_microservices/kapacitor/data:/home/kapacitor
+      - /mnt/bigstorage/rpidata/mqtt_microservices/kapacitor/ticks:/var/lib/kapacitor
+      - /mnt/bigstorage/rpidata/mqtt_microservices/kapacitor/data:/home/kapacitor
     deploy:
       restart_policy:
         condition: on-failure
@@ -92,9 +69,13 @@ services:
   mqtt:
     image: eclipse-mosquitto:1.6
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     ports:
       - target: 1883
         published: 1883
@@ -120,11 +101,15 @@ services:
   mongodb:
     image: mongo:4.4.1-bionic
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     volumes:
-      - /home/alpha/mongodb:/data/db
+      - /mnt/bigstorage/rpidata/mongodb:/data/db
     ports:
       - target: 27017
         published: 27017
@@ -147,9 +132,13 @@ services:
   telegraf:
     image: telegraf:1.16
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     configs:
@@ -170,14 +159,18 @@ services:
   chronograf:
     image: chronograf:1.8
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     ports:
       - target: 8888
         published: 8888
     volumes:
-      - /mnt/raidstorage/rpidata/mqtt_microservices/chronograf:/var/lib/chronograf
+      - /mnt/bigstorage/rpidata/mqtt_microservices/chronograf:/var/lib/chronograf
     deploy:
       placement:
         constraints:
@@ -199,9 +192,13 @@ services:
   influx:
     image: influxdb:1.7
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
+        tag: "{{.ImageName}}"
     ports:
       - target: 8086
         published: 8086
@@ -210,8 +207,8 @@ services:
       INFLUXDB_USER: telegraf
       INFLUXDB_USER_PASSWORD: telegraf
     volumes:
-      - /mnt/raidstorage/rpidata/mqtt_microservices/influxdb/db:/var/lib/influxdb
-      - /mnt/raidstorage/rpidata/mqtt_microservices/influxdb:/etc/influxdb
+      - /mnt/bigstorage/rpidata/mqtt_microservices/influxdb/db:/var/lib/influxdb
+      - /mnt/bigstorage/rpidata/mqtt_microservices/influxdb:/etc/influxdb
     deploy:
       placement:
         constraints:

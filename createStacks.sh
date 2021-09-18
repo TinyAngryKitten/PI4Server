@@ -1,7 +1,8 @@
-export rootFolder=/mnt/raidstorage/rpidata #/home/ubuntu/PI4Server
+export rootFolder=/mnt/bigstorage/rpidata #/home/ubuntu/PI4Server
 export keyPath=/Users/sanderhoyvik/Keys/sshkey
 export username=alpha
 export masterip=192.168.50.3
+export splunk_startup_time=200
 
 echo "creating docker volume folders..."
 
@@ -123,18 +124,17 @@ docker volume create --driver local \
 docker config create traefikconfig traefik/traefik.toml
 #docker config create mqttconfig mqtt_microservices/mosquitto/mosquitto.conf
 
-docker pull tinyangrykitten/hueserver:latest
-docker pull tinyangrykitten/livegamenotification:latest
-docker pull tinyangrykitten/wakeonlan:latest
-docker pull tinyangrykitten/notifications:latest
-docker pull tinyangrykitten/harmonyhub-server:latest
+echo "Deploying splunk stack"
+docker stack deploy --with-registry-auth -c splunk/splunk-stack.yml splunk_stack
 
-docker service rm log
+
+echo "Sleeping for $splunk_startup_time seconds, waiting for splunk to come online.."
+sleep $splunk_startup_time
 
 echo "Deploying mqtt microservices stack"
-docker stack deploy --with-registry-auth -c mqtt_microservices/mqtt-stack.yml mqtt_microservices
-echo "Deploying traefik stack"
-docker stack deploy --with-registry-auth -c traefik/traefik-stack.yml traefik
+docker stack deploy --with-registry-auth -c infrastructure/infrastructure-stack.yml infrastructure
+#echo "Deploying traefik stack"
+#docker stack deploy --with-registry-auth -c traefik/traefik-stack.yml traefik
 echo "Deplying shepherd stack"
 docker stack deploy --with-registry-auth -c shepherd/shepherd-stack.yml shepherd
 echo "Deploying microservices stack"

@@ -4,9 +4,9 @@ services:
   app:
     image: swarmpit/swarmpit:1.9
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     environment:
       - SWARMPIT_DB=http://db:5984
       - SWARMPIT_INFLUXDB=http://influxdb:8086
@@ -41,9 +41,9 @@ services:
   db:
     image: treehouses/couchdb:2.1.1
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     volumes:
       - dbdata:/opt/couchdb/data
     networks:
@@ -66,9 +66,9 @@ services:
   influxdb:
     image: influxdb:1.7
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     volumes:
       - influxdata:/var/lib/influxdb
     networks:
@@ -88,9 +88,9 @@ services:
   agent:
     image: swarmpit/agent:latest
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     environment:
       - DOCKER_API_VERSION=1.35
     volumes:

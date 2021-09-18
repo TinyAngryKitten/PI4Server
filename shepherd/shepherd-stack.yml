@@ -3,8 +3,12 @@ services:
   shepherd:
     image: mazzolino/shepherd
     logging:
-      driver: "json-file"
+      driver: "splunk"
       options:
+        splunk-token: 4189e578-d38c-482b-a7d4-40cefa1760c4
+        splunk-url: https://192.168.50.3:8088
+        splunk-format: json
+        splunk-insecureskipverify: "true"
         tag: "{{.ImageName}}/{{.Name}}"
     networks:
       - notification
@@ -16,13 +20,7 @@ services:
       VERBOSE: "true"
       TZ: "Europe/Oslo"
     volumes:
-      - type: volume
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - type: volume
-        source: /root/.docker/config.json
-        target: /root/.docker/config.json
-        read_only: true
+      - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       restart_policy:
         condition: on-failure

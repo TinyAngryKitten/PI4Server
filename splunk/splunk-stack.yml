@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  #https://www.tekstream.com/containerization-and-splunk-how-docker-and-splunk-work-together/
+  #https://splunk.github.io/docker-splunk/STORAGE_OPTIONS.html
+  splunk:
+    image: splunk/splunk
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}"
+    volumes:
+      - /mnt/bigstorage/rpidata/splunk/var:/opt/splunk/var
+      - /mnt/bigstorage/rpidata/splunk/etc:/opt/splunk/etc
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_USER=root
+      - SPLUNK_PASSWORD=changem3N0w!
+    ports:
+      - published: 8011
+        target: 8000
+      - published: 9997
+        target: 9997
+      - published: 8088
+        target: 8088
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+  splunk_forwarder:
+    image: splunk/universalforwarder
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=changem3N0w!
+      - SPLUNK_USER=root
+      - SPLUNK_FORWARD_SERVER=192.168.50.3:9997

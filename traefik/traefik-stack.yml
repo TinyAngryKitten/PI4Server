@@ -10,7 +10,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     configs:
       - source: traefikconfig
         target: /traefik.toml
@@ -62,7 +62,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        tag: "{{.ImageName}}/{{.Name}}"
+        tag: "{{.ImageName}}"
     deploy:
       restart_policy:
         condition: on-failure
